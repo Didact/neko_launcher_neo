@@ -578,13 +578,15 @@ class GameDetailsState extends State<GameDetails> {
                   Expanded(
                     child: TextButton(
                       onPressed: () {
-                        Clipboard.setData(ClipboardData(text: widget.game.name));
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        width: 600,
-                        duration: Duration(seconds: 2),
-                        content: Text("Title copied to clipboard!"),
-                      ));
+                        Clipboard.setData(
+                            ClipboardData(text: widget.game.name));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          width: 600,
+                          duration: Duration(seconds: 2),
+                          content: Text("Title copied to clipboard!"),
+                        ));
                       },
                       style: const ButtonStyle(alignment: Alignment.centerLeft),
                       child: Text(
@@ -592,7 +594,9 @@ class GameDetailsState extends State<GameDetails> {
                         softWrap: false,
                         overflow: TextOverflow.fade,
                         textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 36, color: Theme.of(context).colorScheme.onBackground),
+                        style: TextStyle(
+                            fontSize: 36,
+                            color: Theme.of(context).colorScheme.onBackground),
                       ),
                     ),
                   ),
@@ -744,21 +748,20 @@ class GameDetailsState extends State<GameDetails> {
                     children: [
                       Expanded(
                           child: NekoCard(
-                          title: "Description",
-                          body: Expanded(
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(maxHeight: 164),
-                              child: SingleChildScrollView(
-                                child: Text(widget.game.desc)
-                              ),
-                            ),
+                        title: "Description",
+                        body: Expanded(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxHeight: 164),
+                            child: SingleChildScrollView(
+                                child: Text(widget.game.desc)),
                           ),
+                        ),
                       )),
                       widget.game.vndbIntegration
-                      ? Expanded(
-                        child: VNDBCard(vndb: widget.game.vndb!),
-                      )
-                      : const SizedBox.shrink()
+                          ? Expanded(
+                              child: VNDBCard(vndb: widget.game.vndb!),
+                            )
+                          : const SizedBox.shrink()
                     ],
                   ),
                 )
@@ -808,9 +811,7 @@ class GameConfigState extends State<GameConfig> {
                 tooltip: "Open JSON in text editor",
                 splashRadius: Styles.splash,
                 icon: const Icon(Icons.edit),
-                onPressed: () => {
-                  launchUrl(Uri.file(widget.game.path))
-                },
+                onPressed: () => {launchUrl(Uri.file(widget.game.path))},
               ),
             ),
             Padding(
@@ -865,16 +866,19 @@ class GameConfigState extends State<GameConfig> {
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: OutlinedButton(
-                          onPressed: () {
-                            var vndbInstance = (_vndbidKey.currentState?.value ?? "") != ""
-                              ? VNDB(_vndbidKey.currentState!.value)
-                              : VNDB.fromTitle(_titleKey.currentState?.value ?? widget.game.name);
-                            vndbInstance.getInfo().then((vndb) {
-                              _titleKey.currentState!.didChange(vndb.displayTitle);
-                            });
-                          },
-                          child: const Text("Get title from VNDB")
-                        ),
+                            onPressed: () {
+                              var vndbInstance =
+                                  (_vndbidKey.currentState?.value ?? "") != ""
+                                      ? VNDB(_vndbidKey.currentState!.value)
+                                      : VNDB.fromTitle(
+                                          _titleKey.currentState?.value ??
+                                              widget.game.name);
+                              vndbInstance.getInfo().then((vndb) {
+                                _titleKey.currentState!
+                                    .didChange(vndb.displayTitle);
+                              });
+                            },
+                            child: const Text("Get title from VNDB")),
                       ),
                     ],
                   ),
@@ -917,49 +921,48 @@ class GameConfigState extends State<GameConfig> {
                   child: Row(
                     children: [
                       FormField(
-                        key: _vndbKey,
-                        initialValue: widget.game.vndbIntegration,
-                        onSaved: (bool? newValue) {
-                          widget.game.vndbIntegration = newValue ?? widget.game.vndbIntegration;
-                        },
-                        builder: (FormFieldState<bool> field) {
-                          return Row(
-                            children: [
-                              const Text("Show VNDB info"),
-                              Switch(
-                                value: field.value ?? false,
-                                onChanged: (bool value) {
-                                  field.didChange(value);
-                                }
-                              )
-                            ],
-                          );
-                        }
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          key: _vndbidKey,
-                          initialValue: widget.game.vndbid,
-                          decoration: const InputDecoration(
-                            labelText: "VNDB ID",
-                            helperText: "If left empty the launcher will try to deduce the game from the title."
-                          ),
-                          onSaved: (String? newValue) {
-                            widget.game.vndbid = newValue ?? widget.game.vndbid;
+                          key: _vndbKey,
+                          initialValue: widget.game.vndbIntegration,
+                          onSaved: (bool? newValue) {
+                            widget.game.vndbIntegration =
+                                newValue ?? widget.game.vndbIntegration;
                           },
-                        )
-                      ),
+                          builder: (FormFieldState<bool> field) {
+                            return Row(
+                              children: [
+                                const Text("Show VNDB info"),
+                                Switch(
+                                    value: field.value ?? false,
+                                    onChanged: (bool value) {
+                                      field.didChange(value);
+                                    })
+                              ],
+                            );
+                          }),
+                      Expanded(
+                          child: TextFormField(
+                        key: _vndbidKey,
+                        initialValue: widget.game.vndbid,
+                        decoration: const InputDecoration(
+                            labelText: "VNDB ID",
+                            helperText:
+                                "If left empty the launcher will try to deduce the game from the title."),
+                        onSaved: (String? newValue) {
+                          widget.game.vndbid = newValue ?? widget.game.vndbid;
+                        },
+                      )),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: OutlinedButton(
-                          onPressed: () {
-                            var vndbInstance = VNDB.fromTitle(_titleKey.currentState?.value ?? widget.game.name);
-                            vndbInstance.getInfo().then((vndb) {
-                              _vndbidKey.currentState!.didChange(vndb.id);
-                            });
-                          },
-                          child: const Text("Guess ID from title")
-                        ),
+                            onPressed: () {
+                              var vndbInstance = VNDB.fromTitle(
+                                  _titleKey.currentState?.value ??
+                                      widget.game.name);
+                              vndbInstance.getInfo().then((vndb) {
+                                _vndbidKey.currentState!.didChange(vndb.id);
+                              });
+                            },
+                            child: const Text("Guess ID from title")),
                       )
                     ],
                   ),
@@ -1008,8 +1011,9 @@ class GameConfigState extends State<GameConfig> {
                                     if (field.hasError)
                                       Text(field.errorText ?? "",
                                           style: TextStyle(
-                                              color:
-                                                  Theme.of(context).colorScheme.error))
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .error))
                                   ],
                                 );
                               },
@@ -1043,18 +1047,25 @@ class GameConfigState extends State<GameConfig> {
                             ),
                             const VerticalDivider(),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: OutlinedButton(
-                                onPressed: () {
-                                  var vndbInstance = (_vndbidKey.currentState?.value ?? "") != ""
-                                    ? VNDB(_vndbidKey.currentState!.value)
-                                    : VNDB.fromTitle(_titleKey.currentState?.value ?? widget.game.name);
-                                  vndbInstance.getInfo().then((vndb) {
-                                    _descKey.currentState!.didChange(vndb.description);
-                                  });
-                                },
-                                child: const Text("Get description from VNDB")
-                              ),
+                                  onPressed: () {
+                                    var vndbInstance = (_vndbidKey
+                                                    .currentState?.value ??
+                                                "") !=
+                                            ""
+                                        ? VNDB(_vndbidKey.currentState!.value)
+                                        : VNDB.fromTitle(
+                                            _titleKey.currentState?.value ??
+                                                widget.game.name);
+                                    vndbInstance.getInfo().then((vndb) {
+                                      _descKey.currentState!
+                                          .didChange(vndb.description);
+                                    });
+                                  },
+                                  child:
+                                      const Text("Get description from VNDB")),
                             )
                           ],
                         ),
@@ -1095,10 +1106,7 @@ enum Sorting {
 
 enum Filtering { all, favourite, neverPlayed }
 
-enum TimeOperation {
-  moreThan,
-  lessThan
-}
+enum TimeOperation { moreThan, lessThan }
 
 class GameListState extends State<GameList> {
   List<Game> games = [];
@@ -1127,7 +1135,8 @@ class GameListState extends State<GameList> {
   }
 
   void search(String query) {
-    var words = query.toLowerCase().split(RegExp(r' (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)'));
+    var words =
+        query.toLowerCase().split(RegExp(r' (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)'));
     var fav = false;
     var tags = [];
     var desc = "";
@@ -1138,15 +1147,22 @@ class GameListState extends State<GameList> {
     var timeOperation = TimeOperation.moreThan;
     var keywords = [];
     for (var word in words) {
-      if (word == "!fav" || word == "!favorite" || word == "!favourite" || word == "!f") {
+      if (word == "!fav" ||
+          word == "!favorite" ||
+          word == "!favourite" ||
+          word == "!f") {
         keywords.add(word);
         fav = true;
       }
-      if (word.startsWith("!tag:") || word.startsWith("!tags:") || word.startsWith("!t:")) {
+      if (word.startsWith("!tag:") ||
+          word.startsWith("!tags:") ||
+          word.startsWith("!t:")) {
         keywords.add(word);
         tags.addAll(word.split(":")[1].split(","));
       }
-      if (word.startsWith("!desc:") || word.startsWith("!description:") || word.startsWith("!d:")) {
+      if (word.startsWith("!desc:") ||
+          word.startsWith("!description:") ||
+          word.startsWith("!d:")) {
         keywords.add(word);
         desc = word.split(":")[1].replaceAll('"', "");
       }
@@ -1191,10 +1207,16 @@ class GameListState extends State<GameList> {
       }
     }
     words.removeWhere((word) => keywords.contains(word));
-    var newView = games.where((game) => game.name.toLowerCase().contains(words.join(" "))).toList();
+    var newView = games
+        .where((game) => game.name.toLowerCase().contains(words.join(" ")))
+        .toList();
     if (tags.isNotEmpty) {
       for (String tag in tags) {
-        newView = newView.where((game) => game.tags.map((e) => e.toString().toLowerCase()).contains(tag.replaceAll('"', ""))).toList();
+        newView = newView
+            .where((game) => game.tags
+                .map((e) => e.toString().toLowerCase())
+                .contains(tag.replaceAll('"', "")))
+            .toList();
       }
     }
     if (time > 0) {
@@ -1211,7 +1233,9 @@ class GameListState extends State<GameList> {
       }
     }
     if (desc.isNotEmpty) {
-      newView = newView.where((game) => game.desc.toLowerCase().contains(desc.toLowerCase())).toList();
+      newView = newView
+          .where((game) => game.desc.toLowerCase().contains(desc.toLowerCase()))
+          .toList();
     }
     if (fav) {
       newView = newView.where((game) => game.favourite).toList();
@@ -1275,12 +1299,14 @@ class GameListState extends State<GameList> {
                   splashRadius: Styles.splash,
                   padding: const EdgeInsets.all(1),
                   icon: const Icon(Icons.home),
-                  onPressed: onHomeScreen ? null : () {
-                    disableHome();
-                    navigatorKey.currentState!.pushReplacementNamed(
-                      "/",
-                    );
-                  }),
+                  onPressed: onHomeScreen
+                      ? null
+                      : () {
+                          disableHome();
+                          navigatorKey.currentState!.pushReplacementNamed(
+                            "/",
+                          );
+                        }),
               const Expanded(
                 child: Center(
                   child: Text(
@@ -1336,45 +1362,46 @@ class GameListState extends State<GameList> {
           ),
         ),
         games.isNotEmpty
-            ? view.isNotEmpty 
-              ? Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
-                    itemCount: view.length,
-                    itemBuilder: (context, index) {
-                      return GameButton(
-                        game: view[index],
-                        onTap: () {
-                          enableHome();
-                          view[index].update();
-                          if (navigatorKey.currentState!.canPop()) {
-                            navigatorKey.currentState!.pop();
-                          }
-                          navigatorKey.currentState!.pushReplacementNamed(
-                            "/game",
-                            arguments: view[index],
-                          );
-                        },
-                      );
-                    },
-                  ),
-                )
-              : Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Text("Nothing found... ",
-                          style: TextStyle(
-                              fontSize: 24,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onBackground)),
+            ? view.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(
+                          decelerationRate: ScrollDecelerationRate.fast),
+                      itemCount: view.length,
+                      itemBuilder: (context, index) {
+                        return GameButton(
+                          game: view[index],
+                          onTap: () {
+                            enableHome();
+                            view[index].update();
+                            if (navigatorKey.currentState!.canPop()) {
+                              navigatorKey.currentState!.pop();
+                            }
+                            navigatorKey.currentState!.pushReplacementNamed(
+                              "/game",
+                              arguments: view[index],
+                            );
+                          },
+                        );
+                      },
                     ),
-                  ],
-                ),
-              )
+                  )
+                : Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text("Nothing found... ",
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground)),
+                        ),
+                      ],
+                    ),
+                  )
             : Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1401,19 +1428,19 @@ class GameListState extends State<GameList> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        decoration: const InputDecoration(labelText: "Search...", prefixIcon: Icon(Icons.search)),
-                        onChanged: search,
-                      ),
-                    ),
-                  ],
-                )
-              )
+        Padding(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                        labelText: "Search...", prefixIcon: Icon(Icons.search)),
+                    onChanged: search,
+                  ),
+                ),
+              ],
+            ))
       ],
     );
   }

@@ -51,3 +51,5 @@ log_*.txt
 
 # Packaged execs
 archives/
+
+.fvm/flutter_sdk

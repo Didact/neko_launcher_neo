@@ -17,11 +17,13 @@ final listKey = GlobalKey<GameListState>();
 final bgKey = GlobalKey<NekoBackgroundState>();
 
 final gamesFolder = Platform.isLinux
-    ? Directory("${Platform.environment["HOME"]!}/.local/share/neko-launcher/games")
+    ? Directory(
+        "${Platform.environment["HOME"]!}/.local/share/neko-launcher/games")
     : Directory("${Platform.environment["APPDATA"]!}\\neko-launcher\\games");
 
 final logsFolder = Platform.isLinux
-    ? Directory("${Platform.environment["HOME"]!}/.local/share/neko-launcher/logs")
+    ? Directory(
+        "${Platform.environment["HOME"]!}/.local/share/neko-launcher/logs")
     : Directory("${Platform.environment["APPDATA"]!}\\neko-launcher\\logs");
 
 final launcherConfig = LauncherConfig(Platform.isLinux
@@ -229,18 +231,15 @@ class Home extends StatelessWidget {
                     tooltip: "Social",
                     splashRadius: Styles.splash,
                     onPressed: () {
-                          listKey.currentState!.enableHome();
-                          if (supabase.client.auth.currentUser != null)
-                            {
-                              navigatorKey.currentState!
-                                  .pushReplacementNamed("/social");
-                            }
-                          else
-                            {
-                              Navigator.of(context, rootNavigator: true)
-                                  .pushNamed("/login");
-                            }
-                        },
+                      listKey.currentState!.enableHome();
+                      if (supabase.client.auth.currentUser != null) {
+                        navigatorKey.currentState!
+                            .pushReplacementNamed("/social");
+                      } else {
+                        Navigator.of(context, rootNavigator: true)
+                            .pushNamed("/login");
+                      }
+                    },
                     icon: const Icon(Icons.person)),
               ],
             ),
@@ -486,28 +485,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     TextFormField(
                       key: _gelKey,
                       decoration: InputDecoration(
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: IconButton(
-                                splashRadius: Styles.splash,
-                                tooltip: "Restore default",
-                                onPressed: () {
-                                  _gelKey.currentState!.didChange(
-                                      launcherConfig.defaults["gelbooruTags"]);
-                                },
-                                icon: const Icon(Icons.refresh)),
-                          ),
-                          suffixText: "-video sort:random",
-                          labelText: "Home screen background tags",
-                          hintText: "Gelbooru tags",
-                          helperText:
-                              "The home screen background finds images using Gelbooru. If you don't know what you're doing, leave as is or refer to their wiki (howto:search, howto:cheatsheet).",
-                          helperStyle: const TextStyle(
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: IconButton(
+                              splashRadius: Styles.splash,
+                              tooltip: "Restore default",
+                              onPressed: () {
+                                _gelKey.currentState!.didChange(
+                                    launcherConfig.defaults["gelbooruTags"]);
+                              },
+                              icon: const Icon(Icons.refresh)),
+                        ),
+                        suffixText: "-video sort:random",
+                        labelText: "Home screen background tags",
+                        hintText: "Gelbooru tags",
+                        helperText:
+                            "The home screen background finds images using Gelbooru. If you don't know what you're doing, leave as is or refer to their wiki (howto:search, howto:cheatsheet).",
+                        helperStyle: const TextStyle(
                             fontSize: 12,
                             color: Colors.grey,
-                            fontWeight: FontWeight.w500
-                          ),
-                        ),
+                            fontWeight: FontWeight.w500),
+                      ),
                       initialValue: launcherConfig.gelbooruTags,
                       onSaved: (value) {
                         launcherConfig.gelbooruTags =
@@ -517,7 +515,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     FormField(
                       initialValue: launcherConfig.vndbTitles,
                       onSaved: (String? value) {
-                        launcherConfig.vndbTitles = value ?? launcherConfig.vndbTitles;
+                        launcherConfig.vndbTitles =
+                            value ?? launcherConfig.vndbTitles;
                       },
                       builder: (FormFieldState<String> field) {
                         return Padding(
@@ -532,13 +531,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     child: Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
                                           child: Radio<String>(
-                                            value: "default",
-                                            groupValue: field.value,
-                                            activeColor: Colors.pink,
-                                            onChanged: (String? newValue) => field.didChange(newValue)
-                                          ),
+                                              value: "default",
+                                              groupValue: field.value,
+                                              activeColor: Colors.pink,
+                                              onChanged: (String? newValue) =>
+                                                  field.didChange(newValue)),
                                         ),
                                         const Text("Default")
                                       ],
@@ -548,13 +548,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     child: Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
                                           child: Radio<String>(
-                                            value: "english",
-                                            groupValue: field.value,
-                                            activeColor: Colors.pink,
-                                            onChanged: (String? newValue) => field.didChange(newValue)
-                                          ),
+                                              value: "english",
+                                              groupValue: field.value,
+                                              activeColor: Colors.pink,
+                                              onChanged: (String? newValue) =>
+                                                  field.didChange(newValue)),
                                         ),
                                         const Text("English")
                                       ],
@@ -564,13 +565,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     child: Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
                                           child: Radio<String>(
-                                            value: "original",
-                                            groupValue: field.value,
-                                            activeColor: Colors.pink,
-                                            onChanged: (String? newValue) => field.didChange(newValue)
-                                          ),
+                                              value: "original",
+                                              groupValue: field.value,
+                                              activeColor: Colors.pink,
+                                              onChanged: (String? newValue) =>
+                                                  field.didChange(newValue)),
                                         ),
                                         const Text("Original")
                                       ],
@@ -585,10 +587,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               const Text(
                                 "By default the launcher will use romanized original titles where possible.",
                                 style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w500
-                                ),
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500),
                               )
                             ],
                           ),
@@ -612,18 +613,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     ButtonBar(
                       alignment: MainAxisAlignment.start,
-                      children: [ElevatedButton(
-                        onPressed: () => {
-                          launchUrl(Uri.file(logsFolder.path))
-                        },
-                        child: const Text("Open logs folder"),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => {
-                          launchUrl(Uri.parse("https://github.com/Neko-Services/neko_launcher_neo/wiki"))
-                        },
-                        child: const Text("Open wiki"),
-                      )],
+                      children: [
+                        ElevatedButton(
+                          onPressed: () =>
+                              {launchUrl(Uri.file(logsFolder.path))},
+                          child: const Text("Open logs folder"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => {
+                            launchUrl(Uri.parse(
+                                "https://github.com/Neko-Services/neko_launcher_neo/wiki"))
+                          },
+                          child: const Text("Open wiki"),
+                        )
+                      ],
                     )
                   ],
                 ),

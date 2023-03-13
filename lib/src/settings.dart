@@ -8,7 +8,8 @@ const defaultConfig = {
   "lePath": "",
   "blurNsfw": false,
   "hideNsfw": false,
-  "gelbooruTags": "cat_ears -rating:questionable -rating:explicit -huge_filesize width:>=1080 score:>=30",
+  "gelbooruTags":
+      "cat_ears -rating:questionable -rating:explicit -huge_filesize width:>=1080 score:>=30",
   "vndbTitles": "default"
 };
 

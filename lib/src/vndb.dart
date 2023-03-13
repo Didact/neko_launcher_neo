@@ -24,7 +24,8 @@ class VNDB extends ChangeNotifier {
 
   Future<VNDB> getInfo() async {
     Map<String, dynamic> query = {
-      "fields": "id, title, titles{title, latin, official, main, lang}, released, rating, description, length_minutes",
+      "fields":
+          "id, title, titles{title, latin, official, main, lang}, released, rating, description, length_minutes",
       "results": 1,
       "sort": "popularity",
       "reverse": true
@@ -37,19 +38,21 @@ class VNDB extends ChangeNotifier {
       query["filters"] = ["id", "=", id];
     }
 
-    await http.post(
-      apiUrl,
-      headers: {"Content-Type": "application/json"},
-      body: json.encode(query)
-    ).then((res) {
+    await http
+        .post(apiUrl,
+            headers: {"Content-Type": "application/json"},
+            body: json.encode(query))
+        .then((res) {
       var response = json.decode(res.body);
       var titleList = response["results"][0]["titles"] as List<dynamic>;
       var defaultTitle = response["results"][0]["title"];
-      var originalTitle = titleList.singleWhere((title) => title["main"])["title"];
+      var originalTitle =
+          titleList.singleWhere((title) => title["main"])["title"];
       // ignore: avoid_init_to_null
       var englishTitle = null;
       try {
-        englishTitle = titleList.singleWhere((title) => title["lang"] == "en")["title"];
+        englishTitle =
+            titleList.singleWhere((title) => title["lang"] == "en")["title"];
       } catch (e) {
         //
       }
@@ -78,7 +81,7 @@ class VNDB extends ChangeNotifier {
 
 class VNDBCard extends StatefulWidget {
   final VNDB vndb;
-  
+
   const VNDBCard({Key? key, required this.vndb}) : super(key: key);
 
   @override
@@ -108,75 +111,72 @@ class VNDBCardState extends State<VNDBCard> {
     return NekoCard(
       title: "VNDB",
       body: Expanded(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: widget.vndb.rating != null ? Color.lerp(Colors.red, Colors.green, ((widget.vndb.rating ?? 0) * 1.6 - 40) / 100) : Colors.grey,
-                  borderRadius: BorderRadius.circular(8)
-                ),
-                child: SizedBox.square(
-                  dimension: 80,
-                  child: Center(
-                    child: Text(
-                      "${widget.vndb.rating?.round() ?? '?'}",
-                      style: const TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                  color: widget.vndb.rating != null
+                      ? Color.lerp(Colors.red, Colors.green,
+                          ((widget.vndb.rating ?? 0) * 1.6 - 40) / 100)
+                      : Colors.grey,
+                  borderRadius: BorderRadius.circular(8)),
+              child: SizedBox.square(
+                dimension: 80,
+                child: Center(
+                  child: Text(
+                    "${widget.vndb.rating?.round() ?? '?'}",
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.vndb.displayTitle,
-                      style: const TextStyle(
-                          fontSize: 24,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: false,
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.vndb.displayTitle,
+                    style: const TextStyle(
+                      fontSize: 24,
                     ),
-                    Text(
-                      "(${widget.vndb.released?.year ?? 'Unknown release'})",
-                      style: const TextStyle(
-                            fontSize: 16,
-                      ),
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: false,
+                  ),
+                  Text(
+                    "(${widget.vndb.released?.year ?? 'Unknown release'})",
+                    style: const TextStyle(
+                      fontSize: 16,
                     ),
-                    Text(
-                      "Average play time: ${widget.vndb.length?.toStringAsFixed(1) ?? '?'} hours",
-                      style: const TextStyle(
-                          fontSize: 16,
-                      ),
-                      overflow: TextOverflow.fade,
-                      softWrap: false,
+                  ),
+                  Text(
+                    "Average play time: ${widget.vndb.length?.toStringAsFixed(1) ?? '?'} hours",
+                    style: const TextStyle(
+                      fontSize: 16,
                     ),
-                  ],
-                ),
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                  ),
+                ],
               ),
-            )
-          ]
-        ),
+            ),
+          )
+        ]),
       ),
       actions: ButtonBar(
         alignment: MainAxisAlignment.start,
         children: [
           TextButton(
-            onPressed: widget.vndb.id != null ? 
-              () => launchUrl(Uri.parse("https://vndb.org/${widget.vndb.id}"))
-              : null,
-            child: const Text("View on VNDB")
-          )
+              onPressed: widget.vndb.id != null
+                  ? () =>
+                      launchUrl(Uri.parse("https://vndb.org/${widget.vndb.id}"))
+                  : null,
+              child: const Text("View on VNDB"))
         ],
       ),
     );

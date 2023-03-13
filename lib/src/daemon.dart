@@ -36,7 +36,13 @@ class GameDaemon extends ChangeNotifier {
     var start = DateTime.now();
     Fimber.i("(Game: ${game.name}) Launching: $exec");
     userProfile?.updateActivity(ActivityType.game, details: game.name);
-    Process.run(exec, args, environment: env, runInShell: Platform.isLinux ? false : game.emulate ? false : true)
+    Process.run(exec, args,
+            environment: env,
+            runInShell: Platform.isLinux
+                ? false
+                : game.emulate
+                    ? false
+                    : true)
         .then((value) {
       activeGame = null;
       userProfile?.updateActivity(ActivityType.online);

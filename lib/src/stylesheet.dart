@@ -252,7 +252,10 @@ class NekoBackgroundState extends State<NekoBackground> {
 
   void updateSummary() {
     var newGames = listKey.currentState?.games.length ?? 0;
-    var newTime = listKey.currentState?.games.map((game) => game.time).reduce((value, element) => value + element) ?? 0;
+    var newTime = listKey.currentState?.games
+            .map((game) => game.time)
+            .reduce((value, element) => value + element) ??
+        0;
 
     setState(() {
       time = newTime;
@@ -339,10 +342,8 @@ class NekoBackgroundState extends State<NekoBackground> {
                   "$games games",
                   style: Styles.summary,
                 ),
-                Text(
-                  "${Styles.prettyTime(time)['text']} spent gaming",
-                  style: Styles.summary
-                ),
+                Text("${Styles.prettyTime(time)['text']} spent gaming",
+                    style: Styles.summary),
               ],
             ),
           ),
@@ -369,7 +370,8 @@ class _UpdateCheckerState extends State<UpdateChecker> {
   void initState() {
     super.initState();
     Fimber.i("Checking for updates...");
-    http.get(Uri.parse(
+    http
+        .get(Uri.parse(
             "https://api.github.com/repos/Neko-Services/neko_launcher_neo/releases"))
         .then((response) {
       var json = jsonDecode(response.body);
