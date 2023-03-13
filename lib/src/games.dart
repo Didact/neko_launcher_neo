@@ -901,21 +901,39 @@ class GameConfigState extends State<GameConfig> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    key: _bgKey,
-                    onSaved: (newValue) =>
-                        widget.game.bg = newValue ?? widget.game.bg,
-                    initialValue: widget.game.bg,
-                    decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: "Background image path",
-                        suffixIcon: NekoPathSuffix(
-                          fieldKey: _bgKey,
-                          type: FileType.image,
-                        )),
-                  ),
-                ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(children: [
+                      Expanded(
+                          child: TextFormField(
+                        key: _bgKey,
+                        onSaved: (newValue) =>
+                            widget.game.bg = newValue ?? widget.game.bg,
+                        initialValue: widget.game.bg,
+                        decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: "Background image path",
+                            suffixIcon: NekoPathSuffix(
+                              fieldKey: _bgKey,
+                              type: FileType.image,
+                            )),
+                      )),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: OutlinedButton(
+                              onPressed: () {
+                                var vndbInstance =
+                                    (_vndbidKey.currentState?.value ?? "") != ""
+                                        ? VNDB(_vndbidKey.currentState!.value)
+                                        : VNDB.fromTitle(
+                                            _titleKey.currentState?.value ??
+                                                widget.game.name);
+                                vndbInstance.getInfo().then((vndb) {
+                                  _bgKey.currentState!
+                                      .didChange(vndb.coverUri?.toString());
+                                });
+                              },
+                              child: const Text("Get background from VNDB")))
+                    ])),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(

@@ -16,6 +16,7 @@ class VNDB extends ChangeNotifier {
   DateTime? released;
   String? description;
   double? length;
+  Uri? coverUri;
   String displayTitle = "???";
 
   VNDB(this.id);
@@ -25,7 +26,7 @@ class VNDB extends ChangeNotifier {
   Future<VNDB> getInfo() async {
     Map<String, dynamic> query = {
       "fields":
-          "id, title, titles{title, latin, official, main, lang}, released, rating, description, length_minutes",
+          "id, title, titles{title, latin, official, main, lang}, released, rating, description, length_minutes, image{url}",
       "results": 1,
       "sort": "popularity",
       "reverse": true
@@ -72,6 +73,7 @@ class VNDB extends ChangeNotifier {
       description ??= response["results"][0]["description"];
       var lengthMinutes = response["results"][0]["length_minutes"];
       length ??= lengthMinutes == null ? null : lengthMinutes / 60.0;
+      coverUri ??= Uri.tryParse(response["results"][0]["image"]["url"]);
       Fimber.i("Successfully processed response from VNDB");
       notifyListeners();
       return this;
