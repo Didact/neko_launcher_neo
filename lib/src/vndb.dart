@@ -70,7 +70,8 @@ class VNDB extends ChangeNotifier {
       rating ??= response["results"][0]["rating"] + 0.0;
       released ??= DateTime.parse(response["results"][0]["released"]);
       description ??= response["results"][0]["description"];
-      length ??= response["results"][0]["length_minutes"] / 60.0;
+      var lengthMinutes = response["results"][0]["length_minutes"];
+      length ??= lengthMinutes == null ? null : lengthMinutes / 60.0;
       Fimber.i("Successfully processed response from VNDB");
       notifyListeners();
       return this;
